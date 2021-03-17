@@ -20,5 +20,5 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 11
-    - name: Build with Maven
-      run: mvn -B package -f foodshopper/pom.xml
+    - name: Build with Maven and run tests
+      run: mvn --batch-mode --file foodshopper/pom.xml clean verify
