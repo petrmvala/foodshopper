@@ -21,4 +21,4 @@ jobs:
       with:
         java-version: 11
     - name: Build with Maven and run tests
-      run: mvn --batch-mode --file foodshopper/pom.xml clean verify
+      run: mvn --batch-mode --file backend/pom.xml clean verify
