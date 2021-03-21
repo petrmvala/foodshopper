@@ -14,8 +14,8 @@ public class IngredientService {
         this.ingredientRepository = ingredientRepository;
     }
 
-    public void saveOne(Ingredient ingredient){
-        ingredientRepository.save(ingredient);
+    public Ingredient save(Ingredient ingredient) {
+        return ingredientRepository.save(ingredient);
     }
 
     public List<Ingredient> getAll() {
@@ -27,7 +27,7 @@ public class IngredientService {
         return ingredientRepository.findById(id).get();
     }
 
-    public void deleteOne(Long id) {
+    public void delete(Long id) {
         ingredientRepository.deleteById(id);
     }
 }
