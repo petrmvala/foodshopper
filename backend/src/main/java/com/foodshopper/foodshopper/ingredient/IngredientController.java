@@ -1,5 +1,6 @@
 package com.foodshopper.foodshopper.ingredient;
 
+import com.foodshopper.foodshopper.exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class IngredientController {
 
     @GetMapping(path = "/{id}")
     public Ingredient getIngredientById(@PathVariable("id") Long id) {
-        return ingredientService.getById(id);
+        return ingredientService.getById(id).orElseThrow(EntityNotFoundException::new);
     }
 
     @PostMapping

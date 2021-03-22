@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -26,7 +27,7 @@ class IngredientControllerTest {
 
     @MockBean
     public IngredientService ingredientService;
-    String baseUrl = "/ingredients";
+    String baseUrl = "/v1/ingredients";
 
     @Nested
     class GetAllIngredients {
@@ -52,16 +53,28 @@ class IngredientControllerTest {
     class GetIngredientById {
 
         @Test
-        void shouldReturnQueriedIngredient() throws Exception {
+        void shouldReturnQueriedIngredientAndStatus200() throws Exception {
             when(ingredientService.getById(1L))
-                    .thenReturn(new Ingredient(1L, "JitterTed", Map.of("knows Java", "true")));
+                    .thenReturn(Optional.of(new Ingredient(1L, "JitterTed", Map.of("knows Java", "true"))));
             mockMvc
                     .perform(MockMvcRequestBuilders.get(baseUrl + "/1"))
                     .andExpect(MockMvcResultMatchers.status().isOk())
                     .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("JitterTed"))
                     .andExpect(MockMvcResultMatchers.jsonPath("$.data['knows Java']").value("true"));
         }
+
+        @Test
+        void shouldReturn404OnNotFindingIngredient() throws Exception {
+            when(ingredientService.getById(123L))
+                    .thenReturn(Optional.empty());
+
+            mockMvc.perform(MockMvcRequestBuilders.get(baseUrl+ "/123"))
+                    .andExpect(MockMvcResultMatchers.status().isNotFound());
+        }
+
+
     }
+
 
     @Nested
     class CreateIngredient {
@@ -72,12 +85,13 @@ class IngredientControllerTest {
             when(ingredientService.save(any(Ingredient.class)))
                     .thenReturn(new Ingredient(1L, "tramstarzz",
                             Map.of("have_lag_when_viewing_on_phone", "true")));
+
             mockMvc
                     .perform(MockMvcRequestBuilders.post(baseUrl)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(tram)))
-            .andExpect(MockMvcResultMatchers.status().isCreated())
-            .andExpect(MockMvcResultMatchers.header().string("Location", "/ingredients/1"));
+                    .andExpect(MockMvcResultMatchers.status().isCreated())
+                    .andExpect(MockMvcResultMatchers.header().string("Location", "/ingredients/1"));
         }
 
     }
