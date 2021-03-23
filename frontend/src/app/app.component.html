@@ -1,17 +1,8 @@
 <h1>{{title}}</h1>
-<button (click)="getAllIngredientsJSON()">Get all Ingredients</button>
-<button (click)="resetIngredients()">reset</button>
+<nav>
+  <button routerLink="/ingredients">Ingredients</button>
+  <button routerLink="/requirements">Requirements</button>
+</nav>
+<hr>
 
-<h3>Ingredients:</h3>
-<ul>
-  <li *ngFor="let ingredient of ingredientArray">
-    <ul>
-      <li>name: {{ingredient.name}}</li>
-      <li>id: {{ingredient.id}}</li>
-      <li>data:</li>
-      <li *ngFor="let entry of ingredient.data | keyvalue">
-        {{entry.key}} : {{entry.value}}
-      </li>
-    </ul>
-  </li>
-</ul>
+<router-outlet></router-outlet>
