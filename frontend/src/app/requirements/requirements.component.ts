@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-requirements',
@@ -6,10 +6,23 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./requirements.component.sass']
 })
 export class RequirementsComponent implements OnInit {
+  categories: string[] = ['chicken', 'beef', 'vegetables', 'fruits', 'oats'];
+  selectedCategories = new Map<string, number>();
 
-  constructor() { }
+  selectedCategory = '';
+  testValue = 50;
 
-  ngOnInit(): void {
+
+  constructor() {
   }
 
+  ngOnInit(): void {
+    this.selectedCategories.set('test', 55);
+  }
+
+  addSelectedCategory(category: string): void {
+    if (category) {
+      this.selectedCategories.set(category, 0);
+    }
+  }
 }

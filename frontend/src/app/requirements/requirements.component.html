@@ -1,1 +1,21 @@
-<p>requirements works!</p>
+<h2>Requirements</h2>
+<label>Energy per day:</label><input type="number"><br>
+<br>
+<select [(ngModel)]="selectedCategory">
+  <option *ngFor="let category of categories">{{category}}</option>
+</select>
+<button (click)="addSelectedCategory(selectedCategory)">Add</button>
+<h4>Selected:</h4>
+
+<ul>
+  <li *ngFor="let cat of selectedCategories | keyvalue">
+    {{cat.key}}
+    <input [(ngModel)]="cat.value"  type="range" min="0" max="100">
+    <input [(ngModel)]="cat.value" type="number">
+  </li>
+</ul>
+
+<hr>
+<h3>Testing html elements</h3>
+<label>Range slider: </label><input [(ngModel)]="testValue"  type="range" min="0" max="100">
+<input [(ngModel)]="testValue" type="number">
