@@ -33,7 +33,6 @@ export class RequirementsComponent implements OnInit {
     if (value < 0) {
       value = 0;
     }
-    alert('saving: ' + key + ' ' + value);
     this.selectedCategories.set(key, value);
   }
 }
