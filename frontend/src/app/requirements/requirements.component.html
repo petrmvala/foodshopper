@@ -10,8 +10,9 @@
 <ul>
   <li *ngFor="let cat of selectedCategories | keyvalue">
     {{cat.key}}
-    <input [(ngModel)]="cat.value"  type="range" min="0" max="100">
-    <input [(ngModel)]="cat.value" type="number">
+    <input [(ngModel)]="cat.value" (mouseup)="updateMap(cat.key, cat.value)" type="range" step="0.25" min="0" max="100">
+    <input [(ngModel)]="cat.value" (change)="updateMap(cat.key, cat.value)" type="number" min="0" max="100">
+    <button (click)="updateMap(cat.key, cat.value)">update</button>
   </li>
 </ul>
 

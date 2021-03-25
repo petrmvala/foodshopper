@@ -21,8 +21,19 @@ export class RequirementsComponent implements OnInit {
   }
 
   addSelectedCategory(category: string): void {
-    if (category) {
+    if (category && !this.selectedCategories.has(category)) {
       this.selectedCategories.set(category, 0);
     }
+  }
+
+  updateMap(key: string, value: number): void {
+    if (value > 100) {
+      value = 100;
+    }
+    if (value < 0) {
+      value = 0;
+    }
+    alert('saving: ' + key + ' ' + value);
+    this.selectedCategories.set(key, value);
   }
 }
