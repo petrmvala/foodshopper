@@ -4,10 +4,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.List;
+import java.util.Map;
 
 @Component
 @AllArgsConstructor
@@ -16,7 +15,7 @@ public class PrePopulationOfDB implements CommandLineRunner {
     private final IngredientRepository ingredientRepository;
 
     @Override
-    public void run(String... args) throws IOException {
+    public void run(String... args) {
         File nutriDatabaze = new File("NutriDatabaze-v7.16-data-export.csv");
         try (BufferedReader reader = new BufferedReader(new FileReader(nutriDatabaze))) {
             String line;
@@ -35,6 +34,13 @@ public class PrePopulationOfDB implements CommandLineRunner {
                 }
                 ingredientRepository.save(ingredient);
             }
+        } catch (IOException e) {
+            ingredientRepository.saveAll(List.of(
+                    new Ingredient("Chicken", Map.of("Protein per 100g", "A fooking lot")),
+                    new Ingredient("not chicken", Map.of("Protein per 100g", "not a lot")),
+                    new Ingredient("orange", Map.of("Vitamin C", "fook ton")),
+                    new Ingredient("radish", Map.of("Red color per piece", "all over it")),
+                    new Ingredient("spinach", Map.of("Iron per 100g", "10x less than claimed by US WW2 propaganda"))));
         }
 
     }
