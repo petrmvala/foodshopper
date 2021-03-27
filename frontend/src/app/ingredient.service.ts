@@ -7,12 +7,12 @@ import {Ingredient} from '../types/Ingredient';
   providedIn: 'root'
 })
 export class IngredientService {
-  private baseUrl = 'http://localhost:8080/ingredient';
+  private baseUrl = 'http://localhost:8080/v1/ingredients';
 
   constructor(private httpClient: HttpClient) {
   }
 
   getAllIngredientsJSON(): Observable<Ingredient[]> {
-    return this.httpClient.get<Ingredient[]>(this.baseUrl + '/all');
+    return this.httpClient.get<Ingredient[]>(this.baseUrl);
   }
 }
