@@ -1,6 +1,6 @@
 package com.foodshopper.foodshopper.ingredient;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -10,9 +10,10 @@ import java.io.FileReader;
 import java.io.IOException;
 
 @Component
+@AllArgsConstructor
 public class PrePopulationOfDB implements CommandLineRunner {
-    @Autowired
-    private IngredientRepository ingredientRepository;
+
+    private final IngredientRepository ingredientRepository;
 
     @Override
     public void run(String... args) throws IOException {
