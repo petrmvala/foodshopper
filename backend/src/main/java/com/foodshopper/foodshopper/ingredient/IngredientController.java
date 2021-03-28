@@ -7,6 +7,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/ingredient")
+@CrossOrigin(origins = "http://localhost:4200")
 public class IngredientController {
     private IngredientService ingredientService;
 
