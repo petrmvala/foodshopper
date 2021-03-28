@@ -35,6 +35,7 @@ public class PrePopulationOfDB implements CommandLineRunner {
                 ingredientRepository.save(ingredient);
             }
         } catch (IOException e) {
+            e.printStackTrace();
             ingredientRepository.saveAll(List.of(
                     new Ingredient("Chicken", Map.of("Protein per 100g", "A fooking lot")),
                     new Ingredient("not chicken", Map.of("Protein per 100g", "not a lot")),
