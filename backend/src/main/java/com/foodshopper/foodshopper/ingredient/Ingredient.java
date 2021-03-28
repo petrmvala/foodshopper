@@ -1,12 +1,16 @@
 package com.foodshopper.foodshopper.ingredient;
 
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +18,7 @@ import java.util.Map;
 @TypeDef(name = "json", typeClass = JsonStringType.class)
 @Getter
 @Setter
+@AllArgsConstructor
 public class Ingredient {
 
     @Id
@@ -27,24 +32,9 @@ public class Ingredient {
         data = new HashMap<>();
     }
 
-    public Ingredient(String name) {
-        this();
-        this.name = name;
-    }
-
-    public Ingredient(Long id, String name) {
-        this();
-        this.id = id;
-        this.name = name;
-    }
-
-    public Ingredient (String name, Map<String, String> data) {
+    public Ingredient(String name, Map<String, String> data) {
         this.name = name;
         this.data = data;
-    }
-
-    public void addData(String key, String value) {
-        data.put(key, value);
     }
 
     @Override
