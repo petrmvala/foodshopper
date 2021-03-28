@@ -11,3 +11,8 @@ we should be ok if we do not share the db
 (including in here on git) and each time we display 
 information from this db we display a clickable link
 to the http://www.nutridatabaze.cz/ at the same time.
+
+note: the database from there is in "ANSI" or 
+"Eastern Europe (Windows-1250/WinLatin2)" encoding
+and need to be converted to some of the UTF encoding 
+for proper displaying of characterset
