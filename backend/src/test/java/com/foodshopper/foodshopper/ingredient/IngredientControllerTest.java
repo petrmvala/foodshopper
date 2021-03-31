@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -17,6 +18,8 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(IngredientController.class)
 class IngredientControllerTest {
@@ -38,8 +41,8 @@ class IngredientControllerTest {
                     .thenReturn(List.of(new Ingredient("mins890", Map.of("Piggy", "Yes"))
                     ));
             mockMvc
-                    .perform(MockMvcRequestBuilders.get(baseUrl))
-                    .andExpect(MockMvcResultMatchers.status().isOk())
+                    .perform(get(baseUrl))
+                    .andExpect(status().isOk())
                     .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(1))
                     .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("mins890"))
                     .andExpect(MockMvcResultMatchers.jsonPath("$[0].data.Piggy").value("Yes"));
@@ -50,6 +53,30 @@ class IngredientControllerTest {
     }
 
     @Nested
+    class LoadIngredientsPage {
+        @Test
+        void shouldReturnPageAndStatus201() throws Exception {
+            final Ingredient oxCantEven = new Ingredient(1L, "OxCantEven", Map.of("did stream for the first time ", "true"));
+            final Ingredient tramstarzz = new Ingredient(2L, "tramstarzz", Map.of("provider of forbidenn content", "which should not be metioned on stream"));
+            final Ingredient lovemequincy101 = new Ingredient(2L, "lovemequincy101", Map.of("feels left out even he is in shower", "true"));
+
+            when(ingredientService.findAllPage(any()))
+                    .thenReturn(new PageImpl<>(List.of(oxCantEven, tramstarzz, lovemequincy101)));
+
+            mockMvc.perform(get("/v1/ingredients/page")
+                    .param("page", "0")
+                    .param("size", "3")
+                    .param("sort", "id,desc")
+                    .param("sort", "name,asc"))
+                    .andExpect(status().isOk())
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.size").value(3))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.number").value(0))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.content.size()").value(3));
+
+        }
+    }
+
+    @Nested
     class GetIngredientById {
 
         @Test
@@ -57,8 +84,8 @@ class IngredientControllerTest {
             when(ingredientService.getById(1L))
                     .thenReturn(Optional.of(new Ingredient(1L, "JitterTed", Map.of("knows Java", "true"))));
             mockMvc
-                    .perform(MockMvcRequestBuilders.get(baseUrl + "/1"))
-                    .andExpect(MockMvcResultMatchers.status().isOk())
+                    .perform(get(baseUrl + "/1"))
+                    .andExpect(status().isOk())
                     .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("JitterTed"))
                     .andExpect(MockMvcResultMatchers.jsonPath("$.data['knows Java']").value("true"));
         }
@@ -68,8 +95,8 @@ class IngredientControllerTest {
             when(ingredientService.getById(123L))
                     .thenReturn(Optional.empty());
 
-            mockMvc.perform(MockMvcRequestBuilders.get(baseUrl+ "/123"))
-                    .andExpect(MockMvcResultMatchers.status().isNotFound());
+            mockMvc.perform(get(baseUrl + "/123"))
+                    .andExpect(status().isNotFound());
         }
 
 
@@ -90,7 +117,7 @@ class IngredientControllerTest {
                     .perform(MockMvcRequestBuilders.post(baseUrl)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(tram)))
-                    .andExpect(MockMvcResultMatchers.status().isCreated())
+                    .andExpect(status().isCreated())
                     .andExpect(MockMvcResultMatchers.header().string("Location", "/ingredients/1"));
         }
 
