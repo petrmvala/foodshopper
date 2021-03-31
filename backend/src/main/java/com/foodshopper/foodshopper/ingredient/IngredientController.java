@@ -2,6 +2,8 @@ package com.foodshopper.foodshopper.ingredient;
 
 import com.foodshopper.foodshopper.exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +24,11 @@ public class IngredientController {
     @GetMapping
     public List<Ingredient> getAllIngredients() {
         return ingredientService.getAll();
+    }
+
+    @GetMapping(path = "/page")
+    public Page<Ingredient> loadIngredientsPage(Pageable pageable){
+       return ingredientService.findAllPage(pageable);
     }
 
     @GetMapping(path = "/{id}")
