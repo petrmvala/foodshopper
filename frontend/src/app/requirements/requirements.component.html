@@ -5,7 +5,23 @@
   <option *ngFor="let category of categories">{{category}}</option>
 </select>
 <button (click)="addSelectedCategory(selectedCategory)">Add</button>
+<br>
+<button (click)="loadFirstPage()">First</button>
+<button (click)="loadPreviousPage()" [disabled]="ingredientPage.first">Previous</button>
+<input type="number" [ngModel]="ingredientPage.number"/>
+<button (click)="loadNextPage()" [disabled]="ingredientPage.last">Next</button>
+<button (click)="loadLastPage()">Last</button>
+
 <h4>Selected:</h4>
+
+<table>
+  <tr>
+    <th>name</th><th>Energy [kcal]</th>
+  </tr>
+  <tr *ngFor="let ingredient of ingredientPage.content">
+    <td>{{ingredient.name}}</td><td>{{ingredient.data.get('ENERC [kcal]')}}</td>
+  </tr>
+</table>
 
 <ul>
   <li *ngFor="let cat of selectedCategories | keyvalue">
@@ -20,3 +36,8 @@
 <h3>Testing html elements</h3>
 <label>Range slider: </label><input [(ngModel)]="testValue"  type="range" min="0" max="100">
 <input [(ngModel)]="testValue" type="number">
+<hr>
+<button (click)="getPage()"> This is a Page loading BUTTON!</button>
+<ul>
+  <li *ngFor="let ingredient of ingredientPage.content"> {{ingredient.name}}</li>
+</ul>
