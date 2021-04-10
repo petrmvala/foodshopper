@@ -83,13 +83,6 @@ export class RequirementsComponent implements OnInit {
   getPage(): void {
     this.ingredientService.getPage(0, 7).subscribe(result => {
       this.ingredientPage = result;
-      this.ingredientPage.content.forEach(ingredient => {
-        const {...origIng} = result.content.find(ing => ing.id === ingredient.id);
-        if (this.instanceOfIngredient(origIng)) {
-          const entries = Object.entries(origIng.data);
-          ingredient.data = new Map<string, string>(entries);
-        }
-      });
     });
   }
 
@@ -106,34 +99,27 @@ export class RequirementsComponent implements OnInit {
   loadFirstPage(): void {
     this.ingredientService.getPage(0, this.pageSize).subscribe(result => {
       this.ingredientPage = result;
-      console.log(result);
     });
   }
 
   loadPreviousPage(): void {
     this.ingredientService.getPage(this.ingredientPage.number - 1, this.pageSize).subscribe(result => {
       this.ingredientPage = result;
-      console.log(result);
     });
   }
 
   loadNextPage(): void {
     this.ingredientService.getPage(this.ingredientPage.number + 1, this.pageSize).subscribe(result => {
       this.ingredientPage = result;
-      console.log(result);
     });
   }
 
   loadLastPage(): void {
     this.ingredientService.getPage(this.ingredientPage.totalPages - 1, this.pageSize).subscribe(result => {
       this.ingredientPage = result;
-      console.log(result);
     });
 
   }
 
-  instanceOfIngredient(object: any): object is Ingredient {
-    return object.id != null;
-  }
 
 }
