@@ -92,6 +92,8 @@ export class RequirementsComponent implements OnInit {
   }
 
   selectIngredient(ingredient: Ingredient): void {
-    this.selectedIngredients.push(ingredient);
+    if (!this.selectedIngredients.find(alreadySelected => alreadySelected.id === ingredient.id)) {
+      this.selectedIngredients.push(ingredient);
+    }
   }
 }
