@@ -1,10 +1,7 @@
 <h2>Requirements</h2>
-<label>Energy per day:</label><input type="number"><label>Number of days:</label><input type="number" value="1"><br>
+<label>Energy per day(dummy):</label><input type="number"><label>Number of days(dummy):</label><input type="number" value="1"><br>
 <br>
-<!--<select [(ngModel)]="selectedCategory">-->
-<!--  <option *ngFor="let category of categories">{{category}}</option>-->
-<!--</select>-->
-<!--<button (click)="addSelectedCategory(selectedCategory)">Add</button>-->
+
 <br>
 <button (click)="loadFirstPage()">First</button>
 <button (click)="loadPreviousPage()" [disabled]="ingredientPage.first">Previous</button>
@@ -45,7 +42,3 @@
 <label>Range slider: </label><input [(ngModel)]="testValue" type="range" min="0" max="100">
 <input [(ngModel)]="testValue" type="number">
 <hr>
-<button (click)="getPage()"> This is a Page loading BUTTON!</button>
-<ul>
-  <li *ngFor="let ingredient of ingredientPage.content"> {{ingredient.name}}</li>
-</ul>
