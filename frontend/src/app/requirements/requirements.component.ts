@@ -3,22 +3,11 @@ import {IngredientService} from '../ingredient.service';
 import {Ingredient} from '../../types/Ingredient';
 import {Page} from '../../types/Page';
 
-const fakeMap: { [key: string]: string } = {
-  ['key1']: 'value1',
-  ['ENERC [kcal]']: 'value2'
+const fakeIngredient: Ingredient = {
+  data: new Map<string, string>([['ENERC [kcal]', 'value1']]),
+  id: 1,
+  name: 'Testing Ingredient'
 };
-
-const fakeIngredient = new (class implements Ingredient {
-  data: Map<string, string>;
-  id: number;
-  name: string;
-
-  constructor(data: Map<string, string>, id: number, name: string) {
-    this.data = data;
-    this.id = id;
-    this.name = name;
-  }
-})(new Map<string, string>([['ENERC [kcal]', 'value1']]), 1, 'this is horrible');
 
 @Component({
   selector: 'app-requirements',
@@ -28,43 +17,24 @@ const fakeIngredient = new (class implements Ingredient {
 export class RequirementsComponent implements OnInit {
   categories: string[] = ['chicken', 'beef', 'vegetables', 'fruits', 'oats'];
   selectedCategories = new Map<string, number>();
+  selectedIngredients: Ingredient[] = [];
 
   pageSize = 7;
 
   selectedCategory = '';
   testValue = 50;
-  ingredientArray: Ingredient[] = [];
-  ingredientPage: Page<Ingredient> = new (class implements Page<Ingredient> {
-    content: Ingredient[] = [];
-    empty: boolean;
-    first: boolean;
-    last: boolean;
-    number: number;
-    numberOfElements: number;
-    page: number;
-    size: number;
-    totalElements: number;
-    totalPages: number;
-
-    constructor(content: Ingredient[], empty: boolean, first: boolean, last: boolean,
-                number: number, numberOfElements: number, page: number, size: number,
-                totalElements: number, totalPages: number) {
-      this.content = content;
-      this.empty = empty;
-      this.first = first;
-      this.last = last;
-      this.number = number;
-      this.numberOfElements = numberOfElements;
-      this.page = page;
-      this.size = size;
-      this.totalElements = totalElements;
-      this.totalPages = totalPages;
-    }
-  })(
-    [fakeIngredient],
-    true, false, false, 0,
-    0, 0, 0, 0, 1);
-
+  ingredientPage: Page<Ingredient> = {
+    content: [fakeIngredient],
+    empty: false,
+    first: true,
+    last: false,
+    number: 0,
+    numberOfElements: 1,
+    page: 0,
+    size: 1,
+    totalElements: 1,
+    totalPages: 1
+  };
 
   constructor(private ingredientService: IngredientService) {
   }
@@ -121,5 +91,7 @@ export class RequirementsComponent implements OnInit {
 
   }
 
-
+  selectIngredient(ingredient: Ingredient): void {
+    this.selectedIngredients.push(ingredient);
+  }
 }
