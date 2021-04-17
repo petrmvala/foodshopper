@@ -18,6 +18,7 @@ export class RequirementsComponent implements OnInit {
   categories: string[] = ['chicken', 'beef', 'vegetables', 'fruits', 'oats'];
   selectedCategories = new Map<string, number>();
   selectedIngredients: Ingredient[] = [];
+  visibleColumns: string[] = ['ENERC [kcal]', 'WATER [g]'];
 
   pageSize = 7;
 
@@ -41,7 +42,7 @@ export class RequirementsComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectedCategories.set('test', 55);
-    this.getPage();
+    this.getPage(0);
   }
 
   addSelectedCategory(category: string): void {
@@ -50,8 +51,8 @@ export class RequirementsComponent implements OnInit {
     }
   }
 
-  getPage(): void {
-    this.ingredientService.getPage(0, 7).subscribe(result => {
+  getPage(page: number): void {
+    this.ingredientService.getPage(page, 7).subscribe(result => {
       this.ingredientPage = result;
     });
   }
@@ -88,7 +89,6 @@ export class RequirementsComponent implements OnInit {
     this.ingredientService.getPage(this.ingredientPage.totalPages - 1, this.pageSize).subscribe(result => {
       this.ingredientPage = result;
     });
-
   }
 
   selectIngredient(ingredient: Ingredient): void {
@@ -96,4 +96,5 @@ export class RequirementsComponent implements OnInit {
       this.selectedIngredients.push(ingredient);
     }
   }
+
 }
