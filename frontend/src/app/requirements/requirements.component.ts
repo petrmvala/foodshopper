@@ -18,7 +18,8 @@ export class RequirementsComponent implements OnInit {
   categories: string[] = ['chicken', 'beef', 'vegetables', 'fruits', 'oats'];
   selectedCategories = new Map<string, number>();
   selectedIngredients: Ingredient[] = [];
-  visibleColumns: string[] = ['ENERC [kcal]', 'WATER [g]'];
+  visibleColumns = new Set<string>();
+  selectableColumns: string[] = [];
 
   pageSize = 7;
 
@@ -45,6 +46,10 @@ export class RequirementsComponent implements OnInit {
     this.getPage(0);
   }
 
+  setSelectableColumns(columnsNames: string[]): void {
+    this.selectableColumns = columnsNames;
+  }
+
   addSelectedCategory(category: string): void {
     if (category && !this.selectedCategories.has(category)) {
       this.selectedCategories.set(category, 0);
@@ -54,6 +59,7 @@ export class RequirementsComponent implements OnInit {
   getPage(page: number): void {
     this.ingredientService.getPage(page, 7).subscribe(result => {
       this.ingredientPage = result;
+      this.setSelectableColumns(Array.from(this.ingredientPage.content[1].data.keys()));
     });
   }
 
@@ -97,4 +103,11 @@ export class RequirementsComponent implements OnInit {
     }
   }
 
+  toggleColumnVisibility(columnName: string): void {
+    if (this.visibleColumns.has(columnName)) {
+      this.visibleColumns.delete(columnName);
+    } else {
+      this.visibleColumns.add(columnName);
+    }
+  }
 }

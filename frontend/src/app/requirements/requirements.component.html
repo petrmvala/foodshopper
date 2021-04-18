@@ -4,7 +4,9 @@
 <br>
 
 <h3>Ingredients</h3>
-
+<hr>
+<button *ngFor="let columnName of selectableColumns" (click)="toggleColumnVisibility(columnName)">{{columnName}}</button>
+<hr>
 <div class="table-container">
   <div class="table-row">
     <button class="pagination-navigation" (click)="loadFirstPage()">First</button>
