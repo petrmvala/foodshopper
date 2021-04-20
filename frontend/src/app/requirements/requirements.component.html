@@ -1,10 +1,10 @@
 <h2>Requirements</h2>
-<label>Energy per day(dummy):</label><input type="number"><label>Number of days(dummy):</label><input type="number"
-                                                                                                      value="1"><br>
-<h3>Constraints</h3>
-<button *ngFor="let columnName of selectableColumns" (click)="addConstraint(columnName)">{{columnName}}</button>
+<select [(ngModel)]="requirementSelected">
+  <option *ngFor="let column of selectableColumns" >{{column}}</option>
+</select>
+<button (click)="addRequirement()">add</button>
 <br>
-<div *ngFor="let constraint of constraints | keyvalue">
+<div *ngFor="let constraint of requirement | keyvalue">
   <label>{{constraint.key}}</label> <input type="number" value="{{constraint.value}}">
 </div>
 <hr>
