@@ -1,10 +1,10 @@
 <h2>Requirements</h2>
-<select [(ngModel)]="requirementSelected">
+<select [(ngModel)]="requirementNameSelected">
   <option *ngFor="let column of selectableColumns" >{{column}}</option>
 </select>
 <button (click)="addRequirement()">add</button>
 <br>
-<div *ngFor="let constraint of requirement | keyvalue">
+<div *ngFor="let constraint of requirements | keyvalue">
   <label>{{constraint.key}}</label> <input type="number" value="{{constraint.value}}">
 </div>
 <hr>
