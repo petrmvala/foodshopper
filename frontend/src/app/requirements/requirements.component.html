@@ -1,6 +1,13 @@
 <h2>Requirements</h2>
 <label>Energy per day(dummy):</label><input type="number"><label>Number of days(dummy):</label><input type="number"
                                                                                                       value="1"><br>
+<h3>Constraints</h3>
+<button *ngFor="let columnName of selectableColumns" (click)="addConstraint(columnName)">{{columnName}}</button>
+<br>
+<div *ngFor="let constraint of constraints | keyvalue">
+  <label>{{constraint.key}}</label> <input type="number" value="{{constraint.value}}">
+</div>
+<hr>
 <br>
 
 <h3>Ingredients</h3>
@@ -41,13 +48,6 @@
     <!--    <button (click)="updateMap(ingredient.key, ingredient.value)">update</button>-->
   </li>
 </ul>
-<hr>
-<h3>Constraints</h3>
-<button *ngFor="let columnName of selectableColumns" (click)="addConstraint(columnName)">{{columnName}}</button>
-<br>
-<div *ngFor="let constraint of constraints | keyvalue">
-  <label>{{constraint.key}}</label> <input type="number" value="{{constraint.value}}">
-</div>
 <hr>
 <h3>Testing html elements</h3>
 <label>Range slider: </label><input [(ngModel)]="testValue" type="range" min="0" max="100">
