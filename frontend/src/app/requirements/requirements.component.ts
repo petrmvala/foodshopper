@@ -18,7 +18,8 @@ const fakeIngredient: Ingredient = {
 export class RequirementsComponent implements OnInit {
   categories: string[] = ['chicken', 'beef', 'vegetables', 'fruits', 'oats'];
   selectedCategories = new Map<string, number>();
-  selectedIngredients: Ingredient[] = [];
+  ingredientsSelected: Ingredient[] = [];
+  ingredientsPlannedAmount = new Map<number, number>();
   visibleColumns = new Set<string>();
   selectableColumns: string[] = [];
   requirements = new Map<string, Requirement>();
@@ -103,8 +104,9 @@ export class RequirementsComponent implements OnInit {
   }
 
   selectIngredient(ingredient: Ingredient): void {
-    if (!this.selectedIngredients.find(alreadySelected => alreadySelected.id === ingredient.id)) {
-      this.selectedIngredients.push(ingredient);
+    if (!this.ingredientsSelected.find(alreadySelected => alreadySelected.id === ingredient.id)) {
+      this.ingredientsSelected.push(ingredient);
+      this.ingredientsPlannedAmount.set(ingredient.id, 0);
     }
   }
 
@@ -122,4 +124,11 @@ export class RequirementsComponent implements OnInit {
     );
   }
 
+  setIngredientAmount(id: number, event: any): void {
+    if (event?.target?.value === null) {
+      console.log('setIngredientAmount have been called with null value in event');
+    } else {
+      this.ingredientsPlannedAmount.set(id, event.target.valueAsNumber);
+    }
+  }
 }

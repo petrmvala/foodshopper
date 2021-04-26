@@ -19,11 +19,32 @@
 <hr>
 <br>
 
-<h3>Ingredients</h3>
+<h4>Ingredients selected:</h4>
+<div class="table-container">
+  <div class="table-row">
+    <label class="column">name</label>
+    <label class="column">amount</label>
+
+  </div>
+  <div *ngFor="let ingredient of ingredientsSelected; let in = index" class="table-row">
+    <div class="column">{{ingredient.name}}</div>
+    <input class="column" type="number"
+           value="{{this.ingredientsPlannedAmount.get(ingredient.id)}}"
+           (change)="setIngredientAmount(ingredient.id, $event)">
+
+    <!--    <input [(ngModel)]="ingredient.value" (mouseup)="updateMap(ingredient.key, ingredient.value)" type="range"-->
+    <!--           step="0.25" min="0" max="100">-->
+    <!--    <input [(ngModel)]="ingredient.value" (change)="updateMap(ingredient.key, ingredient.value)" type="number" min="0"-->
+    <!--           max="100">-->
+    <!--    <button (click)="updateMap(ingredient.key, ingredient.value)"></button>-->
+  </div>
+
+</div>
 <hr>
+
+<h3>Add Ingredients to Selection</h3>
 <button *ngFor="let columnName of selectableColumns"
         (click)="toggleColumnVisibility(columnName)">{{columnName}}</button>
-<hr>
 <div class="table-container">
   <div class="table-row">
     <button class="pagination-navigation" (click)="loadFirstPage()">First</button>
@@ -48,18 +69,6 @@
 <hr>
 
 
-<h4>Selected:</h4>
-<ul>
-  <li *ngFor="let ingredient of selectedIngredients">
-    {{ingredient.name}}
-    <!--    <input [(ngModel)]="ingredient.value" (mouseup)="updateMap(ingredient.key, ingredient.value)" type="range"-->
-    <!--           step="0.25" min="0" max="100">-->
-    <!--    <input [(ngModel)]="ingredient.value" (change)="updateMap(ingredient.key, ingredient.value)" type="number" min="0"-->
-    <!--           max="100">-->
-    <!--    <button (click)="updateMap(ingredient.key, ingredient.value)">update</button>-->
-  </li>
-</ul>
-<hr>
 <h3>Testing html elements</h3>
 <label>Range slider: </label><input [(ngModel)]="testValue" type="range" min="0" max="100">
 <input [(ngModel)]="testValue" type="number">
