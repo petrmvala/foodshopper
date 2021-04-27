@@ -1,14 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {IngredientService} from '../ingredient.service';
 import {Ingredient} from '../../types/Ingredient';
-import {Page} from '../../types/Page';
+import {Page, emptyPage} from '../../types/Page';
 import {Requirement} from '../../types/Requirement';
-
-const fakeIngredient: Ingredient = {
-  data: new Map<string, string>([['ENERC [kcal]', 'value1']]),
-  id: 1,
-  name: 'Testing Ingredient'
-};
 
 @Component({
   selector: 'app-requirements',
@@ -16,7 +10,6 @@ const fakeIngredient: Ingredient = {
   styleUrls: ['./requirements.component.sass']
 })
 export class RequirementsComponent implements OnInit {
-  categories: string[] = ['chicken', 'beef', 'vegetables', 'fruits', 'oats'];
   selectedCategories = new Map<string, number>();
   ingredientsSelected: Ingredient[] = [];
   ingredientsPlannedAmount = new Map<number, number>();
