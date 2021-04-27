@@ -10,3 +10,18 @@ export interface Page<T> {
   numberOfElements: number;
   empty: boolean;
 }
+
+export function emptyPage<T>(): Page<T> {
+  return {
+    content: [],
+    empty: false,
+    first: true,
+    last: false,
+    number: 0,
+    numberOfElements: 1,
+    page: 0,
+    size: 1,
+    totalElements: 1,
+    totalPages: 1
+  };
+}
