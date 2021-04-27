@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {IngredientService} from '../ingredient.service';
 import {Ingredient} from '../../types/Ingredient';
-import {Page, emptyPage} from '../../types/Page';
+import {emptyPage} from '../../types/Page';
 import {Requirement} from '../../types/Requirement';
-import {DietPlan} from '../../types/DietPlan';
+import {DietPlan, emptyDietPlan} from '../../types/DietPlan';
 
 @Component({
   selector: 'app-requirements',
@@ -33,6 +33,7 @@ export class RequirementsComponent implements OnInit {
   selectedCategory = '';
   testValue = 50;
   ingredientPage = emptyPage<Ingredient>();
+  selectedDietPlan: DietPlan = emptyDietPlan();
 
   constructor(private ingredientService: IngredientService) {
   }

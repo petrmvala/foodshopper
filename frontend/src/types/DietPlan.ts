@@ -8,3 +8,9 @@ export interface DietPlan {
   selectedIngredients: SelectedIngredient[];
   requirements: Requirement[];
 }
+
+export function emptyDietPlan(): DietPlan {
+  return {
+    endDate: new Date(), id: 0, requirements: [], selectedIngredients: [], startDate: new Date()
+  };
+}

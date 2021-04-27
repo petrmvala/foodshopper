@@ -1,7 +1,10 @@
 <h2>Diet Plan selection</h2>
-<select [(ngModel)]="fakeDietPlans">
-  <option *ngFor="let dietPlan of fakeDietPlans">{{dietPlan.dateStart}}</option>
+<select [(ngModel)]="selectedDietPlan">
+  <option *ngFor="let dietPlan of fakeDietPlans" [ngValue]="dietPlan">{{dietPlan.startDate}}</option>
 </select>
+<br>
+{{selectedDietPlan.startDate}}
+<button>Create new Plan</button>
 <h2>Requirements</h2>
 <select [(ngModel)]="requirementNameSelected">
   <option *ngFor="let column of selectableColumns">{{column}}</option>
