@@ -3,6 +3,7 @@ import {IngredientService} from '../ingredient.service';
 import {Ingredient} from '../../types/Ingredient';
 import {Page, emptyPage} from '../../types/Page';
 import {Requirement} from '../../types/Requirement';
+import {DietPlan} from '../../types/DietPlan';
 
 @Component({
   selector: 'app-requirements',
@@ -20,6 +21,15 @@ export class RequirementsComponent implements OnInit {
 
   pageSize = 7;
 
+  dietPlan: DietPlan = {
+    endDate: new Date(1900, 0, 16, 11, 22, 33, 44),
+    id: 0,
+    requirements: [],
+    selectedIngredients: [],
+    startDate: new Date(1900, 1, 1, 1, 1, 1, 1)
+  };
+
+  fakeDietPlans: DietPlan[] = [this.dietPlan];
   selectedCategory = '';
   testValue = 50;
   ingredientPage = emptyPage<Ingredient>();
