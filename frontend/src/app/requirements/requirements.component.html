@@ -30,6 +30,7 @@
   <div class="table-row">
     <label class="column">name</label>
     <label class="column">amount</label>
+    <label class="column" *ngFor="let requirement of requirements | keyvalue">{{requirement.key}}</label>
 
   </div>
   <div *ngFor="let ingredient of ingredientsSelected; let in = index" class="table-row">
