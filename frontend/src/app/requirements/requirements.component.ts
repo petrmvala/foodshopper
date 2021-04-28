@@ -29,7 +29,15 @@ export class RequirementsComponent implements OnInit {
     startDate: new Date(1900, 1, 1, 1, 1, 1, 1)
   };
 
-  fakeDietPlans: DietPlan[] = [this.dietPlan];
+  dietPlan2: DietPlan = {
+    endDate: new Date(2000, 0, 16, 11, 22, 33, 44),
+    id: 0,
+    requirements: [],
+    selectedIngredients: [],
+    startDate: new Date(2000, 1, 1, 1, 1, 1, 1)
+  };
+
+  fakeDietPlans: DietPlan[] = [this.dietPlan, this.dietPlan2];
   selectedCategory = '';
   testValue = 50;
   ingredientPage = emptyPage<Ingredient>();
