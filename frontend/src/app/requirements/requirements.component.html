@@ -38,6 +38,7 @@
     <input class="column" type="number"
            value="{{this.ingredientsPlannedAmount.get(ingredient.id)}}"
            (change)="setIngredientAmount(ingredient.id, $event)">
+    <input class="column" *ngFor="let requirement of requirements | keyvalue" disabled value="">
 
     <!--    <input [(ngModel)]="ingredient.value" (mouseup)="updateMap(ingredient.key, ingredient.value)" type="range"-->
     <!--           step="0.25" min="0" max="100">-->
