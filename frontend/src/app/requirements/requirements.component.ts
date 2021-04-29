@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {IngredientService} from '../ingredient.service';
 import {Ingredient} from '../../types/Ingredient';
 import {emptyPage} from '../../types/Page';
-import {Requirement} from '../../types/Requirement';
+import {emptyRequirements, Requirements} from '../../types/Requirements';
 import {DietPlan, emptyDietPlan} from '../../types/DietPlan';
 
 @Component({
@@ -16,23 +16,25 @@ export class RequirementsComponent implements OnInit {
   ingredientsPlannedAmount = new Map<number, number>();
   visibleColumns = new Set<string>();
   selectableColumns: string[] = [];
-  requirements = new Map<string, Requirement>();
+  requirements: Requirements = emptyRequirements();
   requirementNameSelected = 'first one';
 
   pageSize = 7;
 
   dietPlan: DietPlan = {
+    name: 'DietPlan1',
     endDate: new Date(1900, 0, 16, 11, 22, 33, 44),
-    id: 0,
-    requirements: [],
+    id: 1,
+    requirements: emptyRequirements(),
     selectedIngredients: [],
     startDate: new Date(1900, 1, 1, 1, 1, 1, 1)
   };
 
   dietPlan2: DietPlan = {
+    name: 'DietPlan2',
     endDate: new Date(2000, 0, 16, 11, 22, 33, 44),
-    id: 0,
-    requirements: [],
+    id: 2,
+    requirements: emptyRequirements(),
     selectedIngredients: [],
     startDate: new Date(2000, 1, 1, 1, 1, 1, 1)
   };
@@ -120,9 +122,10 @@ export class RequirementsComponent implements OnInit {
   }
 
   addRequirement(): void {
-    this.requirements.set(this.requirementNameSelected,
-      {name: this.requirementNameSelected, fulfilled: 0, required: 0}
-    );
+  // TODO: fix this in next commit
+    // this.selectedDietPlan.requirements.set(this.requirementNameSelected,
+    //   {name: this.requirementNameSelected, fulfilled: 0, required: 0}
+    // );
   }
 
   setIngredientAmount(id: number, event: any): void {
