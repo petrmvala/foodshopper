@@ -1,6 +1,29 @@
-export interface Components {
+// export const componentsKeys = [
+//   'energyKcal',
+//   'protein',
+//   'water',
+//   'fat',
+//   'salt',
+//   'sodium',
+//   'sugar',
+//   'fibre',
+//   'edible',
+//   'nonFibreCarbohydrates',
+//   'fattyAcidsTrans',
+//   'carbohydrateTotal',
+//   'fattyAcidsPolyunsaturated',
+//   'minerals',
+//   'fattyAcidsMonounsaturated',
+//   'cholesterol',
+//   'facf',
+//   'fattyAcidsSaturated',
+// ] as const;
+
+
+export interface Components
+{
 // all is per 100g
-// ENERC [kJ]
+// ENERC [kcal]
   energyKcal: number;
 // PROT [g]
   protein: number;

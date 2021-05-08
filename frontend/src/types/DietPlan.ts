@@ -1,5 +1,6 @@
 import {SelectedIngredient} from './SelectedIngredient';
-import {emptyRequirements, Requirements} from './Requirements';
+import {emptyRequirements, Requirement} from './Requirements';
+import {Components} from './Components';
 
 export interface DietPlan {
   id?: number;
@@ -7,7 +8,7 @@ export interface DietPlan {
   startDate: Date;
   endDate: Date;
   selectedIngredients: SelectedIngredient[];
-  requirements: Requirements;
+  requirements: Map<keyof Components, Requirement>;
 }
 
 export function emptyDietPlan(): DietPlan {
