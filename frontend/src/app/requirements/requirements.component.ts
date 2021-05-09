@@ -20,6 +20,7 @@ export class RequirementsComponent implements OnInit {
   selectedIngredients: Ingredient[] = [];
   visibleColumns = new Set<string>();
   selectableColumns: string[] = [];
+  constraints = new Map<string, number>();
 
   pageSize = 7;
 
@@ -110,4 +111,9 @@ export class RequirementsComponent implements OnInit {
       this.visibleColumns.add(columnName);
     }
   }
+
+  addConstraint(columnName: string): void {
+    this.constraints.set(columnName, 0);
+  }
+
 }
