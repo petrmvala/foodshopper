@@ -1,6 +1,8 @@
 package com.foodshopper.foodshopper.ingredient;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,5 +31,9 @@ public class IngredientService {
 
     public void delete(Long id) {
         ingredientRepository.deleteById(id);
+    }
+
+    public Page<Ingredient> findAllPage(Pageable pageable) {
+        return ingredientRepository.findAll(pageable);
     }
 }
