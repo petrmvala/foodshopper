@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {IngredientService} from '../ingredient.service';
 import {Ingredient} from '../../types/Ingredient';
 import {Page} from '../../types/Page';
+import {Requirement} from '../../types/Requirement';
 
 const fakeIngredient: Ingredient = {
   data: new Map<string, string>([['ENERC [kcal]', 'value1']]),
@@ -20,7 +21,8 @@ export class RequirementsComponent implements OnInit {
   selectedIngredients: Ingredient[] = [];
   visibleColumns = new Set<string>();
   selectableColumns: string[] = [];
-  constraints = new Map<string, number>();
+  requirements = new Map<string, Requirement>();
+  requirementNameSelected = 'first one';
 
   pageSize = 7;
 
@@ -60,7 +62,9 @@ export class RequirementsComponent implements OnInit {
   getPage(page: number): void {
     this.ingredientService.getPage(page, 7).subscribe(result => {
       this.ingredientPage = result;
-      this.setSelectableColumns(Array.from(this.ingredientPage.content[1].data.keys()));
+      const columnsNames = Array.from(this.ingredientPage.content[1].data.keys());
+      this.setSelectableColumns(columnsNames);
+      this.requirementNameSelected = columnsNames[0];
     });
   }
 
@@ -112,8 +116,10 @@ export class RequirementsComponent implements OnInit {
     }
   }
 
-  addConstraint(columnName: string): void {
-    this.constraints.set(columnName, 0);
+  addRequirement(): void {
+    this.requirements.set(this.requirementNameSelected,
+      {name: this.requirementNameSelected, fulfilled: 0, required: 0}
+    );
   }
 
 }

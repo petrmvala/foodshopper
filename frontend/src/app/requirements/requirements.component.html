@@ -1,18 +1,36 @@
 <h2>Requirements</h2>
-<label>Energy per day(dummy):</label><input type="number"><label>Number of days(dummy):</label><input type="number"
-                                                                                                      value="1"><br>
+<select [(ngModel)]="requirementNameSelected">
+  <option *ngFor="let column of selectableColumns">{{column}}</option>
+</select>
+<button (click)="addRequirement()">add</button>
+<br>
+<div id="constraints-table" class="table-container">
+  <div class="table-row">
+    <label class="column">name</label>
+    <label class="column">required</label>
+    <label class="column">fulfilled</label>
+  </div>
+  <div *ngFor="let constraint of requirements | keyvalue" class="table-row">
+    <label class="column">{{constraint.key}}</label>
+    <input class="column" type="number" value="{{constraint.value.required}}">
+    <input class="column" type="number" value="{{constraint.value.fulfilled}}">
+  </div>
+</div>
+<hr>
 <br>
 
 <h3>Ingredients</h3>
 <hr>
-<button *ngFor="let columnName of selectableColumns" (click)="toggleColumnVisibility(columnName)">{{columnName}}</button>
+<button *ngFor="let columnName of selectableColumns"
+        (click)="toggleColumnVisibility(columnName)">{{columnName}}</button>
 <hr>
 <div class="table-container">
   <div class="table-row">
     <button class="pagination-navigation" (click)="loadFirstPage()">First</button>
     <button class="pagination-navigation" (click)="loadPreviousPage()" [disabled]="ingredientPage.first">Previous
     </button>
-    <input class="pagination-navigation" type="number" (change)="getPage(ingredientPage.number)" (blur)="getPage(ingredientPage.number)" [(ngModel)]="ingredientPage.number"/>
+    <input class="pagination-navigation" type="number" (change)="getPage(ingredientPage.number)"
+           (blur)="getPage(ingredientPage.number)" [(ngModel)]="ingredientPage.number"/>
     <button class="pagination-navigation" (click)="loadNextPage()" [disabled]="ingredientPage.last">Next</button>
     <button class="pagination-navigation" (click)="loadLastPage()">Last</button>
   </div>
@@ -41,13 +59,6 @@
     <!--    <button (click)="updateMap(ingredient.key, ingredient.value)">update</button>-->
   </li>
 </ul>
-<hr>
-<h3>Constraints</h3>
-<button *ngFor="let columnName of selectableColumns" (click)="addConstraint(columnName)">{{columnName}}</button>
-<br>
-<div *ngFor="let constraint of constraints | keyvalue">
-  <label>{{constraint.key}}</label> <input type="number" value="{{constraint.value}}">
-</div>
 <hr>
 <h3>Testing html elements</h3>
 <label>Range slider: </label><input [(ngModel)]="testValue" type="range" min="0" max="100">
