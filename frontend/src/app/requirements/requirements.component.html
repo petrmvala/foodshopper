@@ -16,10 +16,10 @@
     <label class="column">required</label>
     <label class="column">fulfilled</label>
   </div>
-  <div *ngFor="let constraint of requirements | keyvalue" class="table-row">
-    <label class="column">{{constraint.key}}</label>
-    <input class="column" type="number" value="{{constraint.value.required}}">
-    <input class="column" type="number" value="{{constraint.value.fulfilled}}">
+  <div *ngFor="let requirement of requirements | keyvalue" class="table-row">
+    <label class="column">{{requirement.key}}</label>
+    <input class="column" type="number" value="{{requirement.value.required}}">
+    <input class="column" type="number" value="{{requirement.value.fulfilled}}">
   </div>
 </div>
 <hr>
@@ -30,6 +30,7 @@
   <div class="table-row">
     <label class="column">name</label>
     <label class="column">amount</label>
+    <label class="column" *ngFor="let requirement of requirements | keyvalue">{{requirement.key}}</label>
 
   </div>
   <div *ngFor="let ingredient of ingredientsSelected; let in = index" class="table-row">
@@ -37,6 +38,7 @@
     <input class="column" type="number"
            value="{{this.ingredientsPlannedAmount.get(ingredient.id)}}"
            (change)="setIngredientAmount(ingredient.id, $event)">
+    <input class="column" *ngFor="let requirement of requirements | keyvalue" disabled value="">
 
     <!--    <input [(ngModel)]="ingredient.value" (mouseup)="updateMap(ingredient.key, ingredient.value)" type="range"-->
     <!--           step="0.25" min="0" max="100">-->
