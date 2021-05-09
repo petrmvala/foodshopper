@@ -7,12 +7,14 @@ import {HttpClientModule} from '@angular/common/http';
 import {RequirementsComponent} from './requirements/requirements.component';
 import { IngredientsComponent } from './ingredients/ingredients.component';
 import {FormsModule} from '@angular/forms';
+import { TopBarComponent } from './top-bar/top-bar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RequirementsComponent,
-    IngredientsComponent
+    IngredientsComponent,
+    TopBarComponent
   ],
   imports: [
     BrowserModule,
