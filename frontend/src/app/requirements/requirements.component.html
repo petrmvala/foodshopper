@@ -1,39 +1,44 @@
 <h2>Requirements</h2>
-<label>Energy per day(dummy):</label><input type="number"><label>Number of days(dummy):</label><input type="number" value="1"><br>
+<label>Energy per day(dummy):</label><input type="number"><label>Number of days(dummy):</label><input type="number"
+                                                                                                      value="1"><br>
 <br>
 
-<br>
-<button (click)="loadFirstPage()">First</button>
-<button (click)="loadPreviousPage()" [disabled]="ingredientPage.first">Previous</button>
-<input type="number" [ngModel]="ingredientPage.number"/>
-<button (click)="loadNextPage()" [disabled]="ingredientPage.last">Next</button>
-<button (click)="loadLastPage()">Last</button>
+<h3>Ingredients</h3>
+<hr>
+<button *ngFor="let columnName of selectableColumns" (click)="toggleColumnVisibility(columnName)">{{columnName}}</button>
+<hr>
+<div class="table-container">
+  <div class="table-row">
+    <button class="pagination-navigation" (click)="loadFirstPage()">First</button>
+    <button class="pagination-navigation" (click)="loadPreviousPage()" [disabled]="ingredientPage.first">Previous
+    </button>
+    <input class="pagination-navigation" type="number" (change)="getPage(ingredientPage.number)" (blur)="getPage(ingredientPage.number)" [(ngModel)]="ingredientPage.number"/>
+    <button class="pagination-navigation" (click)="loadNextPage()" [disabled]="ingredientPage.last">Next</button>
+    <button class="pagination-navigation" (click)="loadLastPage()">Last</button>
+  </div>
+  <div class="table-row">
+    <div class="column"></div>
+    <div class="column">name</div>
+    <div class="column" *ngFor="let columnName of visibleColumns">{{columnName}}</div>
+  </div>
+  <div class="table-row" *ngFor="let ingredient of ingredientPage.content">
+    <button class="column" (click)="selectIngredient(ingredient)">add</button>
+    <div class="column">{{ingredient.name}}</div>
+    <div class="column" *ngFor="let columnName of visibleColumns">{{ingredient.data.get(columnName)}}</div>
+  </div>
+</div>
+<hr>
 
-
-<table>
-  <tr>
-    <th></th>
-    <th>name</th>
-    <th>Energy [kcal]</th>
-  </tr>
-  <tr *ngFor="let ingredient of ingredientPage.content">
-    <td>
-      <button (click)="selectIngredient(ingredient)">add</button>
-    </td>
-    <td>{{ingredient.name}}</td>
-    <td>{{ingredient.data.get('ENERC [kcal]')}}</td>
-  </tr>
-</table>
 
 <h4>Selected:</h4>
 <ul>
   <li *ngFor="let ingredient of selectedIngredients">
     {{ingredient.name}}
-<!--    <input [(ngModel)]="ingredient.value" (mouseup)="updateMap(ingredient.key, ingredient.value)" type="range"-->
-<!--           step="0.25" min="0" max="100">-->
-<!--    <input [(ngModel)]="ingredient.value" (change)="updateMap(ingredient.key, ingredient.value)" type="number" min="0"-->
-<!--           max="100">-->
-<!--    <button (click)="updateMap(ingredient.key, ingredient.value)">update</button>-->
+    <!--    <input [(ngModel)]="ingredient.value" (mouseup)="updateMap(ingredient.key, ingredient.value)" type="range"-->
+    <!--           step="0.25" min="0" max="100">-->
+    <!--    <input [(ngModel)]="ingredient.value" (change)="updateMap(ingredient.key, ingredient.value)" type="number" min="0"-->
+    <!--           max="100">-->
+    <!--    <button (click)="updateMap(ingredient.key, ingredient.value)">update</button>-->
   </li>
 </ul>
 

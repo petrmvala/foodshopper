@@ -18,6 +18,8 @@ export class RequirementsComponent implements OnInit {
   categories: string[] = ['chicken', 'beef', 'vegetables', 'fruits', 'oats'];
   selectedCategories = new Map<string, number>();
   selectedIngredients: Ingredient[] = [];
+  visibleColumns = new Set<string>();
+  selectableColumns: string[] = [];
 
   pageSize = 7;
 
@@ -41,7 +43,11 @@ export class RequirementsComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectedCategories.set('test', 55);
-    this.getPage();
+    this.getPage(0);
+  }
+
+  setSelectableColumns(columnsNames: string[]): void {
+    this.selectableColumns = columnsNames;
   }
 
   addSelectedCategory(category: string): void {
@@ -50,9 +56,10 @@ export class RequirementsComponent implements OnInit {
     }
   }
 
-  getPage(): void {
-    this.ingredientService.getPage(0, 7).subscribe(result => {
+  getPage(page: number): void {
+    this.ingredientService.getPage(page, 7).subscribe(result => {
       this.ingredientPage = result;
+      this.setSelectableColumns(Array.from(this.ingredientPage.content[1].data.keys()));
     });
   }
 
@@ -88,12 +95,19 @@ export class RequirementsComponent implements OnInit {
     this.ingredientService.getPage(this.ingredientPage.totalPages - 1, this.pageSize).subscribe(result => {
       this.ingredientPage = result;
     });
-
   }
 
   selectIngredient(ingredient: Ingredient): void {
     if (!this.selectedIngredients.find(alreadySelected => alreadySelected.id === ingredient.id)) {
       this.selectedIngredients.push(ingredient);
+    }
+  }
+
+  toggleColumnVisibility(columnName: string): void {
+    if (this.visibleColumns.has(columnName)) {
+      this.visibleColumns.delete(columnName);
+    } else {
+      this.visibleColumns.add(columnName);
     }
   }
 }
