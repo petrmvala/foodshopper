@@ -1,14 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {IngredientService} from '../ingredient.service';
 import {Ingredient} from '../../types/Ingredient';
-import {Page} from '../../types/Page';
+import {emptyPage} from '../../types/Page';
 import {Requirement} from '../../types/Requirement';
-
-const fakeIngredient: Ingredient = {
-  data: new Map<string, string>([['ENERC [kcal]', 'value1']]),
-  id: 1,
-  name: 'Testing Ingredient'
-};
+import {DietPlan, emptyDietPlan} from '../../types/DietPlan';
 
 @Component({
   selector: 'app-requirements',
@@ -16,7 +11,6 @@ const fakeIngredient: Ingredient = {
   styleUrls: ['./requirements.component.sass']
 })
 export class RequirementsComponent implements OnInit {
-  categories: string[] = ['chicken', 'beef', 'vegetables', 'fruits', 'oats'];
   selectedCategories = new Map<string, number>();
   ingredientsSelected: Ingredient[] = [];
   ingredientsPlannedAmount = new Map<number, number>();
@@ -27,20 +21,27 @@ export class RequirementsComponent implements OnInit {
 
   pageSize = 7;
 
+  dietPlan: DietPlan = {
+    endDate: new Date(1900, 0, 16, 11, 22, 33, 44),
+    id: 0,
+    requirements: [],
+    selectedIngredients: [],
+    startDate: new Date(1900, 1, 1, 1, 1, 1, 1)
+  };
+
+  dietPlan2: DietPlan = {
+    endDate: new Date(2000, 0, 16, 11, 22, 33, 44),
+    id: 0,
+    requirements: [],
+    selectedIngredients: [],
+    startDate: new Date(2000, 1, 1, 1, 1, 1, 1)
+  };
+
+  fakeDietPlans: DietPlan[] = [this.dietPlan, this.dietPlan2];
   selectedCategory = '';
   testValue = 50;
-  ingredientPage: Page<Ingredient> = {
-    content: [fakeIngredient],
-    empty: false,
-    first: true,
-    last: false,
-    number: 0,
-    numberOfElements: 1,
-    page: 0,
-    size: 1,
-    totalElements: 1,
-    totalPages: 1
-  };
+  ingredientPage = emptyPage<Ingredient>();
+  selectedDietPlan: DietPlan = emptyDietPlan();
 
   constructor(private ingredientService: IngredientService) {
   }
