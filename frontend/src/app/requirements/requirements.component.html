@@ -1,22 +1,44 @@
 <h2>Requirements</h2>
-<label>Energy per day:</label><input type="number"><label>Number of days:</label><input type="number" value="1"><br>
+<label>Energy per day(dummy):</label><input type="number"><label>Number of days(dummy):</label><input type="number" value="1"><br>
 <br>
-<select [(ngModel)]="selectedCategory">
-  <option *ngFor="let category of categories">{{category}}</option>
-</select>
-<button (click)="addSelectedCategory(selectedCategory)">Add</button>
-<h4>Selected:</h4>
 
+<br>
+<button (click)="loadFirstPage()">First</button>
+<button (click)="loadPreviousPage()" [disabled]="ingredientPage.first">Previous</button>
+<input type="number" [ngModel]="ingredientPage.number"/>
+<button (click)="loadNextPage()" [disabled]="ingredientPage.last">Next</button>
+<button (click)="loadLastPage()">Last</button>
+
+
+<table>
+  <tr>
+    <th></th>
+    <th>name</th>
+    <th>Energy [kcal]</th>
+  </tr>
+  <tr *ngFor="let ingredient of ingredientPage.content">
+    <td>
+      <button (click)="selectIngredient(ingredient)">add</button>
+    </td>
+    <td>{{ingredient.name}}</td>
+    <td>{{ingredient.data.get('ENERC [kcal]')}}</td>
+  </tr>
+</table>
+
+<h4>Selected:</h4>
 <ul>
-  <li *ngFor="let cat of selectedCategories | keyvalue">
-    {{cat.key}}
-    <input [(ngModel)]="cat.value" (mouseup)="updateMap(cat.key, cat.value)" type="range" step="0.25" min="0" max="100">
-    <input [(ngModel)]="cat.value" (change)="updateMap(cat.key, cat.value)" type="number" min="0" max="100">
-    <button (click)="updateMap(cat.key, cat.value)">update</button>
+  <li *ngFor="let ingredient of selectedIngredients">
+    {{ingredient.name}}
+<!--    <input [(ngModel)]="ingredient.value" (mouseup)="updateMap(ingredient.key, ingredient.value)" type="range"-->
+<!--           step="0.25" min="0" max="100">-->
+<!--    <input [(ngModel)]="ingredient.value" (change)="updateMap(ingredient.key, ingredient.value)" type="number" min="0"-->
+<!--           max="100">-->
+<!--    <button (click)="updateMap(ingredient.key, ingredient.value)">update</button>-->
   </li>
 </ul>
 
 <hr>
 <h3>Testing html elements</h3>
-<label>Range slider: </label><input [(ngModel)]="testValue"  type="range" min="0" max="100">
+<label>Range slider: </label><input [(ngModel)]="testValue" type="range" min="0" max="100">
 <input [(ngModel)]="testValue" type="number">
+<hr>

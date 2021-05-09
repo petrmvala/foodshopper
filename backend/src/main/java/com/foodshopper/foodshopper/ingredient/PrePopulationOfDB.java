@@ -22,15 +22,18 @@ public class PrePopulationOfDB implements CommandLineRunner {
             String[] splitLine;
             String[] columnNames;
             columnNames = reader.readLine().split(";");
+            for (int i = 0; i < columnNames.length; i++) {
+               columnNames[i] = columnNames[i].strip();
+            }
             Ingredient ingredient;
 
             while (null != (line = reader.readLine())) {
                 splitLine = line.split(";");
 //  0           1           2           3       4       5       6       7           8               9           10         11            12         13          14          15          16          17          18          19          20          21          22
 // OrigFdCd	 OrigFdNm	 EngFdNam	 SciNam	 EDIBLE	 NCF	 FACF	 ENERC [kJ]	 ENERC [kcal]	 FAT [g]	 FASAT [g]	 FAMS [g]	 FAPU [g]	 FATRN [g]	 CHOT [g]	 CHO [g]	 SUGAR [g]	 FIBT [g]	 PROT [g]	 ASH [g]	 NA [mg]	 NACL [g]	 WATER [g]
-                ingredient = new Ingredient(Long.parseLong(splitLine[0]), splitLine[2]);
+                ingredient = new Ingredient(Long.parseLong(splitLine[0]), splitLine[2].strip());
                 for (int i = 1; i < columnNames.length; i++) {
-                    ingredient.addData(columnNames[i], splitLine[i]);
+                    ingredient.addData(columnNames[i], splitLine[i].strip());
                 }
                 ingredientRepository.save(ingredient);
             }
