@@ -2,8 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {IngredientService} from '../ingredient.service';
 import {Ingredient} from '../../types/Ingredient';
 import {emptyPage} from '../../types/Page';
-// import {emptyRequirements, Requirements} from '../../types/Requirements';
-import {DietPlan, emptyDietPlan} from '../../types/DietPlan';
+import {DietPlan} from '../../types/DietPlan';
 import {Components} from '../../types/Components';
 import {Requirement} from '../../types/Requirements';
 import {FFConstants} from '../../FFConstants';
@@ -17,7 +16,6 @@ import {SelectedIngredient} from '../../types/SelectedIngredient';
 export class RequirementsComponent implements OnInit {
   selectedCategories = new Map<string, number>();
   ingredientsSelected: Ingredient[] = [];
-  ingredientsPlannedAmount = new Map<number, number>();
   visibleColumns = new Set<string>();
   selectableColumns = FFConstants.ingredientComponents;
   requirementNameSelected = this.selectableColumns[0];
@@ -126,12 +124,37 @@ export class RequirementsComponent implements OnInit {
     if (event?.target?.value === null) {
       console.log('setIngredientAmount have been called with null value in event');
     } else {
-      this.ingredientsPlannedAmount.set(id, event.target.valueAsNumber);
+      const selectedIngredient = this.selectedDietPlan.selectedIngredients.find(selected => selected.ingredient.id === id);
+      if (selectedIngredient instanceof SelectedIngredient) {
+        selectedIngredient.amount = event.target.valueAsNumber;
+        this.recalculateSelectedIngredientsContributions(selectedIngredient);
+      } else {
+        console.log('setIngredientAmount: ingredient not found');
+      }
+
     }
   }
 
   getIngredientColumnValue(ingredient: Ingredient, columnName: string): number {
-   return ingredient.components[columnName as keyof Components];
+    return ingredient.components[columnName as keyof Components];
+  }
+
+  private recalculateSelectedIngredientsContributions(selectedIngredient: SelectedIngredient): void {
+    for (const component of FFConstants.ingredientComponents) {
+      const componentKey = component as keyof Components;
+      const gPer100g = selectedIngredient.ingredient.components[componentKey];
+      const amountInG = selectedIngredient.amount;
+      selectedIngredient.contributions.set(componentKey, amountInG * gPer100g / 100);
+    }
+  }
+
+  getIngredientAmount(id: number): number {
+    const selectedIngredient = this.selectedDietPlan.selectedIngredients.find(selectedI => selectedI.ingredient.id === id);
+    if (selectedIngredient instanceof SelectedIngredient){
+      return selectedIngredient.amount;
+    } else {
+      return -404;
+    }
   }
 
 }

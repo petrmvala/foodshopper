@@ -33,12 +33,13 @@
     <label class="column" *ngFor="let requirement of this.selectedDietPlan.requirements | keyvalue">{{requirement.key}}</label>
 
   </div>
-  <div *ngFor="let selectedIngredient of this.selectedDietPlan.selectedIngredients; let in = index" class="table-row">
+  <div *ngFor="let selectedIngredient of this.selectedDietPlan.selectedIngredients" class="table-row">
     <div class="column">{{selectedIngredient.ingredient.name}}</div>
     <input class="column" type="number"
            value="{{this.getIngredientAmount(selectedIngredient.ingredient.id)}}"
            (change)="setIngredientAmount(selectedIngredient.ingredient.id, $event)">
-    <input class="column" *ngFor="let requirement of this.selectedDietPlan.requirements | keyvalue" disabled value="">
+    <input class="column" *ngFor="let requirement of this.selectedDietPlan.requirements| keyvalue" disabled
+           value="{{selectedIngredient.contributions.get(requirement.key)}}">
   </div>
 
 </div>
