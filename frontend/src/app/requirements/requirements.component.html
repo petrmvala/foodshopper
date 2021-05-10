@@ -19,7 +19,7 @@
   <div *ngFor="let requirement of this.selectedDietPlan.requirements | keyvalue" class="table-row">
     <label class="column">{{requirement.key}}</label>
     <input class="column" type="number" value="{{requirement.value.required}}">
-    <input class="column" type="number" value="{{requirement.value.fulfilled}}">
+    <input class="column" type="number" value="{{requirement.value.fulfilled}}" disabled>
   </div>
 </div>
 <hr>
