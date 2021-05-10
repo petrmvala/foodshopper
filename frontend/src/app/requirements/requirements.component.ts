@@ -118,6 +118,7 @@ export class RequirementsComponent implements OnInit {
     this.selectedDietPlan.requirements.set(this.requirementNameSelected as keyof Components,
       {fulfilled: 0, required: 0}
     );
+    this.calculateRequirementsFulfillment();
   }
 
   setIngredientAmount(id: number, event: any): void {
@@ -128,6 +129,7 @@ export class RequirementsComponent implements OnInit {
       if (selectedIngredient instanceof SelectedIngredient) {
         selectedIngredient.amount = event.target.valueAsNumber;
         this.recalculateSelectedIngredientsContributions(selectedIngredient);
+        this.calculateRequirementsFulfillment();
       } else {
         console.log('setIngredientAmount: ingredient not found');
       }
@@ -150,11 +152,24 @@ export class RequirementsComponent implements OnInit {
 
   getIngredientAmount(id: number): number {
     const selectedIngredient = this.selectedDietPlan.selectedIngredients.find(selectedI => selectedI.ingredient.id === id);
-    if (selectedIngredient instanceof SelectedIngredient){
+    if (selectedIngredient instanceof SelectedIngredient) {
       return selectedIngredient.amount;
     } else {
       return -404;
     }
+  }
+
+  private calculateRequirementsFulfillment(): void {
+    this.selectedDietPlan.requirements.forEach(
+      (requirement, key) => {
+        let fulfilled = 0;
+        this.selectedDietPlan.selectedIngredients.forEach((selectedIngredient => {
+          const contribution = selectedIngredient.contributions.get(key);
+          fulfilled += contribution ? contribution : 0;
+        }));
+        requirement.fulfilled = fulfilled;
+      });
+
   }
 
 }
