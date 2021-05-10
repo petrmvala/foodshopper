@@ -1,4 +1,4 @@
-import {Components} from './Components';
+import {Components, emptyComponents} from './Components';
 import {Ingredient} from './Ingredient';
 
 
@@ -25,10 +25,11 @@ export class NutridatabazeIngredientMapper {
   };
 
   public static mapIngredient(ingredient: Ingredient): void {
+    ingredient.components = emptyComponents();
     Object.entries(ingredient.data)
       .forEach(([key, value]) => {
       if (this.mapping.hasOwnProperty(key)) {
-        ingredient[this.mapping[key]] = +value;
+        ingredient.components[this.mapping[key]] = +value;
       }
     });
   }
