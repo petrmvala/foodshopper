@@ -10,16 +10,16 @@
 </select>
 <button (click)="addRequirement()">add</button>
 <br>
-<div id="constraints-table" class="table-container">
+<div id="requirements-table" class="table-container">
   <div class="table-row">
     <label class="column">name</label>
     <label class="column">required</label>
     <label class="column">fulfilled</label>
   </div>
-  <div *ngFor="let requirement of requirements | keyvalue" class="table-row">
+  <div *ngFor="let requirement of this.selectedDietPlan.requirements | keyvalue" class="table-row">
     <label class="column">{{requirement.key}}</label>
     <input class="column" type="number" value="{{requirement.value.required}}">
-    <input class="column" type="number" value="{{requirement.value.fulfilled}}">
+    <input class="column" type="number" value="{{requirement.value.fulfilled}}" disabled>
   </div>
 </div>
 <hr>
@@ -30,21 +30,16 @@
   <div class="table-row">
     <label class="column">name</label>
     <label class="column">amount</label>
-    <label class="column" *ngFor="let requirement of requirements | keyvalue">{{requirement.key}}</label>
+    <label class="column" *ngFor="let requirement of this.selectedDietPlan.requirements | keyvalue">{{requirement.key}}</label>
 
   </div>
-  <div *ngFor="let ingredient of ingredientsSelected; let in = index" class="table-row">
-    <div class="column">{{ingredient.name}}</div>
+  <div *ngFor="let selectedIngredient of this.selectedDietPlan.selectedIngredients" class="table-row">
+    <div class="column">{{selectedIngredient.ingredient.name}}</div>
     <input class="column" type="number"
-           value="{{this.ingredientsPlannedAmount.get(ingredient.id)}}"
-           (change)="setIngredientAmount(ingredient.id, $event)">
-    <input class="column" *ngFor="let requirement of requirements | keyvalue" disabled value="">
-
-    <!--    <input [(ngModel)]="ingredient.value" (mouseup)="updateMap(ingredient.key, ingredient.value)" type="range"-->
-    <!--           step="0.25" min="0" max="100">-->
-    <!--    <input [(ngModel)]="ingredient.value" (change)="updateMap(ingredient.key, ingredient.value)" type="number" min="0"-->
-    <!--           max="100">-->
-    <!--    <button (click)="updateMap(ingredient.key, ingredient.value)"></button>-->
+           value="{{this.getIngredientAmount(selectedIngredient.ingredient.id)}}"
+           (change)="setIngredientAmount(selectedIngredient.ingredient.id, $event)">
+    <input class="column" *ngFor="let requirement of this.selectedDietPlan.requirements| keyvalue" disabled
+           value="{{selectedIngredient.contributions.get(requirement.key)}}">
   </div>
 
 </div>
@@ -71,7 +66,7 @@
   <div class="table-row" *ngFor="let ingredient of ingredientPage.content">
     <button class="column" (click)="selectIngredient(ingredient)">add</button>
     <div class="column">{{ingredient.name}}</div>
-    <div class="column" *ngFor="let columnName of visibleColumns">{{ingredient.data.get(columnName)}}</div>
+    <div class="column" *ngFor="let columnName of visibleColumns">{{this.getIngredientColumnValue(ingredient, columnName)}}</div>
   </div>
 </div>
 <hr>
