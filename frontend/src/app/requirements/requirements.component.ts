@@ -2,8 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {IngredientService} from '../ingredient.service';
 import {Ingredient} from '../../types/Ingredient';
 import {emptyPage} from '../../types/Page';
-import {Requirement} from '../../types/Requirement';
-import {DietPlan, emptyDietPlan} from '../../types/DietPlan';
+import {DietPlan} from '../../types/DietPlan';
+import {Components} from '../../types/Components';
+import {Requirement} from '../../types/Requirements';
+import {FFConstants} from '../../FFConstants';
+import {SelectedIngredient} from '../../types/SelectedIngredient';
 
 @Component({
   selector: 'app-requirements',
@@ -13,26 +16,26 @@ import {DietPlan, emptyDietPlan} from '../../types/DietPlan';
 export class RequirementsComponent implements OnInit {
   selectedCategories = new Map<string, number>();
   ingredientsSelected: Ingredient[] = [];
-  ingredientsPlannedAmount = new Map<number, number>();
   visibleColumns = new Set<string>();
-  selectableColumns: string[] = [];
-  requirements = new Map<string, Requirement>();
-  requirementNameSelected = 'first one';
+  selectableColumns = FFConstants.ingredientComponents;
+  requirementNameSelected = this.selectableColumns[0];
 
   pageSize = 7;
 
   dietPlan: DietPlan = {
+    name: 'DietPlan1',
     endDate: new Date(1900, 0, 16, 11, 22, 33, 44),
-    id: 0,
-    requirements: [],
+    id: 1,
+    requirements: new Map<keyof Components, Requirement>(),
     selectedIngredients: [],
     startDate: new Date(1900, 1, 1, 1, 1, 1, 1)
   };
 
   dietPlan2: DietPlan = {
+    name: 'DietPlan2',
     endDate: new Date(2000, 0, 16, 11, 22, 33, 44),
-    id: 0,
-    requirements: [],
+    id: 2,
+    requirements: new Map<keyof Components, Requirement>(),
     selectedIngredients: [],
     startDate: new Date(2000, 1, 1, 1, 1, 1, 1)
   };
@@ -41,7 +44,7 @@ export class RequirementsComponent implements OnInit {
   selectedCategory = '';
   testValue = 50;
   ingredientPage = emptyPage<Ingredient>();
-  selectedDietPlan: DietPlan = emptyDietPlan();
+  selectedDietPlan: DietPlan = this.fakeDietPlans[0];
 
   constructor(private ingredientService: IngredientService) {
   }
@@ -49,10 +52,6 @@ export class RequirementsComponent implements OnInit {
   ngOnInit(): void {
     this.selectedCategories.set('test', 55);
     this.getPage(0);
-  }
-
-  setSelectableColumns(columnsNames: string[]): void {
-    this.selectableColumns = columnsNames;
   }
 
   addSelectedCategory(category: string): void {
@@ -64,9 +63,6 @@ export class RequirementsComponent implements OnInit {
   getPage(page: number): void {
     this.ingredientService.getPage(page, 7).subscribe(result => {
       this.ingredientPage = result;
-      const columnsNames = Array.from(this.ingredientPage.content[1].data.keys());
-      this.setSelectableColumns(columnsNames);
-      this.requirementNameSelected = columnsNames[0];
     });
   }
 
@@ -105,9 +101,8 @@ export class RequirementsComponent implements OnInit {
   }
 
   selectIngredient(ingredient: Ingredient): void {
-    if (!this.ingredientsSelected.find(alreadySelected => alreadySelected.id === ingredient.id)) {
-      this.ingredientsSelected.push(ingredient);
-      this.ingredientsPlannedAmount.set(ingredient.id, 0);
+    if (!this.selectedDietPlan.selectedIngredients.find(alreadySelected => alreadySelected.ingredient.id === ingredient.id)) {
+      this.selectedDietPlan.selectedIngredients.push(new SelectedIngredient(ingredient));
     }
   }
 
@@ -120,16 +115,61 @@ export class RequirementsComponent implements OnInit {
   }
 
   addRequirement(): void {
-    this.requirements.set(this.requirementNameSelected,
-      {name: this.requirementNameSelected, fulfilled: 0, required: 0}
+    this.selectedDietPlan.requirements.set(this.requirementNameSelected as keyof Components,
+      {fulfilled: 0, required: 0}
     );
+    this.calculateRequirementsFulfillment();
   }
 
   setIngredientAmount(id: number, event: any): void {
     if (event?.target?.value === null) {
       console.log('setIngredientAmount have been called with null value in event');
     } else {
-      this.ingredientsPlannedAmount.set(id, event.target.valueAsNumber);
+      const selectedIngredient = this.selectedDietPlan.selectedIngredients.find(selected => selected.ingredient.id === id);
+      if (selectedIngredient instanceof SelectedIngredient) {
+        selectedIngredient.amount = event.target.valueAsNumber;
+        this.recalculateSelectedIngredientsContributions(selectedIngredient);
+        this.calculateRequirementsFulfillment();
+      } else {
+        console.log('setIngredientAmount: ingredient not found');
+      }
+
     }
   }
+
+  getIngredientColumnValue(ingredient: Ingredient, columnName: string): number {
+    return ingredient.components[columnName as keyof Components];
+  }
+
+  private recalculateSelectedIngredientsContributions(selectedIngredient: SelectedIngredient): void {
+    for (const component of FFConstants.ingredientComponents) {
+      const componentKey = component as keyof Components;
+      const gPer100g = selectedIngredient.ingredient.components[componentKey];
+      const amountInG = selectedIngredient.amount;
+      selectedIngredient.contributions.set(componentKey, amountInG * gPer100g / 100);
+    }
+  }
+
+  getIngredientAmount(id: number): number {
+    const selectedIngredient = this.selectedDietPlan.selectedIngredients.find(selectedI => selectedI.ingredient.id === id);
+    if (selectedIngredient instanceof SelectedIngredient) {
+      return selectedIngredient.amount;
+    } else {
+      return -404;
+    }
+  }
+
+  private calculateRequirementsFulfillment(): void {
+    this.selectedDietPlan.requirements.forEach(
+      (requirement, key) => {
+        let fulfilled = 0;
+        this.selectedDietPlan.selectedIngredients.forEach((selectedIngredient => {
+          const contribution = selectedIngredient.contributions.get(key);
+          fulfilled += contribution ? contribution : 0;
+        }));
+        requirement.fulfilled = fulfilled;
+      });
+
+  }
+
 }

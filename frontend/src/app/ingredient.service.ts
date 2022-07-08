@@ -5,6 +5,7 @@ import {Ingredient} from '../types/Ingredient';
 import {Page} from '../types/Page';
 import {map} from 'rxjs/operators';
 import {Params} from '@angular/router';
+import {NutridatabazeIngredientMapper} from '../types/NutridatabazeIngredientMapper';
 
 @Injectable({
   providedIn: 'root'
@@ -27,15 +28,12 @@ export class IngredientService {
     return this.httpClient
       .get<Page<Ingredient>>(this.baseUrl + '/page', {params})
       .pipe(map(ingredientPage => {
-        this.fillPageIngredientsMaps(ingredientPage);
-        return ingredientPage;
+          ingredientPage.content.forEach((ingredient) => {
+            NutridatabazeIngredientMapper.mapIngredient(ingredient);
+          });
+          return ingredientPage;
         })
       );
   }
 
-  private fillPageIngredientsMaps(ingredientPage: Page<Ingredient>): void {
-    ingredientPage.content.forEach(ingredient => {
-      ingredient.data = new Map<string, string>(Object.entries(ingredient.data));
-    });
-  }
 }
